@@ -14,6 +14,7 @@ public class Logica {
 		
 		pantallas = 4;
 		
+		
 		nivel2 = new Sinonimos(p);
 		nivel3 = new Homofonas(p);
 	}
