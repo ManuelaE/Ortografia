@@ -9,12 +9,14 @@ import java.util.Collection;
 import java.util.Collections;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Sinonimos {
 
 	private PApplet p;
-	private int xS, yS, xP, yP, sins, pCurso, puntos;
+	private int xS, yS, xP, yP, sins, pCurso, puntos, pantallas, resultados;
 	private boolean termineNivel;
+	private PImage n2_1, n2_2,n2_4, n2_8, n2_10, n2_11, n5_2;
 	private String sinonimo_uno, sinonimo_dos, sinonimo_tres, prueba;
 	private ArrayList<String> palabraEnCurso;
 	private ArrayList<ArrayList> sinonimos;
@@ -37,17 +39,27 @@ public class Sinonimos {
 		s_tres = new ArrayList<>();
 		s_guardoRandom = new ArrayList<>();
 
-		palabraEnCurso.add("amor");
-		palabraEnCurso.add("analizar");
-		palabraEnCurso.add("incomodidad");
+		palabraEnCurso.add("Amor");
+		palabraEnCurso.add("Analizar");
+		palabraEnCurso.add("Incomodidad");
 
-		xS = 204;
-		yS = 200;
-		xP = 204;
-		yP = 100;
+		xS = 197;
+		yS = 325;
+		xP = 196;
+		yP = 205;
 		sins = 0;
 		pCurso = 0;
 		puntos = 0;
+		pantallas = 0;
+		resultados = 0;
+		
+		n2_1 = p.loadImage("../data/n2/n2_1.jpg");
+		n2_2 = p.loadImage("../data/n2/n2_2.jpg");
+		n2_4 = p.loadImage("../data/n2/n2_4.jpg");
+		n2_8 = p.loadImage("../data/n2/n2_8.jpg");
+		n2_10 = p.loadImage("../data/n2/n2_10.jpg");
+		n2_11 = p.loadImage("../data/n2/n2_11.jpg");
+		n5_2 = p.loadImage("../data/n2/n5_2.jpg");
 
 		palabritas = p.loadStrings("../data/sinonimosPorPalabra.txt");
 		palabrotas_uno = palabritas[3].split(",");
@@ -59,24 +71,49 @@ public class Sinonimos {
 	}
 
 	public void pintar() {
-
-		p.fill(255, 200, 0);
-		p.textSize(30);
-		p.text(puntos, 300, 50);
-
-		p.noStroke();
-		p.fill(255, 150, 0);
-		p.rect(50, 400, 150, 50);
-		p.rect(220, 400, 150, 50);
-
-		String palabra = palabraEnCurso.get(pCurso);
 		
-		p.textAlign(p.CENTER, p.CENTER);
-		p.fill(255, 200, 0);
-		p.textSize(30);
-		p.text(palabra, xP, yP);
+		pantalla();
 
-		pintarSinonimos();
+	}
+	
+	public void pantalla () {
+		
+		switch (pantallas) {
+		case 0:
+			p.image(n2_1, 0, 0, 393, 700);
+			break;
+			
+		case 1:
+			p.image(n2_10, 0, 0, 393, 700);
+			break;
+			
+		case 2:
+			p.image(n2_11, 0, 0, 393, 700);
+			break;
+			
+		case 3:
+			p.image(n2_2, 0, 0, 393, 700);
+			break;
+			
+		case 4:
+			p.image(n5_2, 0, 0, 393, 700);
+			
+			juego();
+			break;
+			
+		case 5:
+			p.image(n2_4, 0, 0, 393, 700);
+			//System.out.println("fuck");
+			break;
+			
+		case 6:
+			p.image(n2_8, 0, 0, 393, 700);
+			break;
+			
+		case 7:
+			termineNivel = true;
+			break;
+		}
 	}
 
 	public void pintarSinonimos() {
@@ -85,25 +122,47 @@ public class Sinonimos {
 
 			sinonimo_uno = s_uno.get(sins);
 
-			p.fill(255, 100, 0);
-			p.textSize(30);
+			p.fill(255);
+			p.textSize(50);
 			p.text(sinonimo_uno, xS, yS);
 
 		} else if (pCurso == 1) {
 
 			sinonimo_dos = s_dos.get(sins);
 
-			p.fill(255, 100, 0);
-			p.textSize(30);
+			p.fill(255);
+			p.textSize(50);
 			p.text(sinonimo_dos, xS, yS);
 
 		} else if (pCurso == 2) {
 
 			sinonimo_tres = s_tres.get(sins);
 
-			p.fill(255, 100, 0);
-			p.textSize(30);
+			p.fill(255);
+			p.textSize(50);
 			p.text(sinonimo_tres, xS, yS);
+		}
+	}
+	
+	public void juego () {
+		
+		pintarSinonimos();
+		
+		p.fill(255);
+		p.textSize(13);
+		p.text(puntos, 243, 154);
+
+		String palabra = palabraEnCurso.get(pCurso);
+		
+		p.textAlign(p.CENTER, p.CENTER);
+		p.fill(255);
+		p.textSize(30);
+		p.text(palabra, xP, yP);
+		
+		if (resultados == 1) {
+			
+			pantallas=5;
+			
 		}
 	}
 
@@ -172,7 +231,7 @@ public class Sinonimos {
 	public void validarCambio() {
 		// System.out.println(p.mouseX + "," + p.mouseY);
 
-		if (p.mouseX > 50 && p.mouseX < 199 && p.mouseY > 400 && p.mouseY < 450) {
+		if (p.mouseX > 77 && p.mouseX < 144 && p.mouseY > 548 && p.mouseY < 601) {
 
 			validar(false);
 
@@ -180,8 +239,11 @@ public class Sinonimos {
 				sins++;
 
 			} else if (sins == 19) {
+				
+				sins = 0;
+				resultados = 1;
 
-				if (pCurso < 3) {
+				/*if (pCurso < 3) {
 					sins = 0;
 
 					if (pCurso == 2) {
@@ -191,12 +253,12 @@ public class Sinonimos {
 						pCurso++;
 					}
 
-				}
+				}*/
 			}
 
 		}
 
-		if (p.mouseX > 220 && p.mouseX < 379 && p.mouseY > 400 && p.mouseY < 450) {
+		if (p.mouseX > 249 && p.mouseX < 314 && p.mouseY > 548 && p.mouseY < 601) {
 
 			validar(true);
 
@@ -205,7 +267,10 @@ public class Sinonimos {
 
 			} else if (sins == 19) {
 
-				if (pCurso < 3) {
+				sins = 0;
+				resultados = 1;
+
+				/*if (pCurso < 3) {
 					sins = 0;
 
 					if (pCurso == 2) {
@@ -214,11 +279,59 @@ public class Sinonimos {
 
 						pCurso++;
 					}
-				}
+
+				}*/
 			}
 		}
 	}
 
+	public void zonasS () {
+		
+		switch (pantallas) {
+		case 0:
+			if (p.mouseX > 79 && p.mouseX < 315 && p.mouseY > 562 && p.mouseY < 604) {
+				pantallas = 1;
+			}
+			break;
+			
+		case 1:
+			if (p.mouseX > 79 && p.mouseX < 315 && p.mouseY > 562 && p.mouseY < 604) {
+				pantallas = 2;
+			}
+			
+			break;
+			
+		case 2:
+			if (p.mouseX > 79 && p.mouseX < 315 && p.mouseY > 562 && p.mouseY < 604) {
+				pantallas = 3;
+			}
+			break;
+			
+		case 3:
+			if (p.mouseX > 0 && p.mouseX < 391 && p.mouseY > 120 && p.mouseY < 516) {
+				pantallas = 4;
+			}
+			break;
+			
+		case 4:
+			validarCambio();
+			break;
+			
+		case 5:
+			if (p.mouseX > 79 && p.mouseX < 315 && p.mouseY > 562 && p.mouseY < 604) {
+				pantallas = 6;
+			}
+			break;
+			
+		case 6:
+			if (p.mouseX > 115 && p.mouseX < 351 && p.mouseY > 449 && p.mouseY < 513) {
+				pantallas = 7;
+			}
+			break;
+
+		}
+	}
+	
 	public void cargarPalabras() {
 
 		for (int i = 0; i < palabrotas_uno.length; i++) {
